@@ -1,7 +1,8 @@
-package com.mzhadan.phoneaccounting.api
+package com.mzhadan.phoneaccounting.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.mzhadan.phoneaccounting.remote.phones.PhoneAccountingApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +20,7 @@ object PhoneAccountingApiService {
             .client(okHttpClient)
             .build()
     }
-    val phoneAccountingApi: PhoneAccountingApi by lazy {
+    val phonesApi: PhoneAccountingApi by lazy {
         retrofit.create(PhoneAccountingApi::class.java)
     }
 }

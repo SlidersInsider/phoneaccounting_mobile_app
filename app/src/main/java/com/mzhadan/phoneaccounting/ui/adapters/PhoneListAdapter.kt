@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mzhadan.phoneaccounting.databinding.PhoneInfoListElementBinding
-import com.mzhadan.phoneaccounting.models.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 
 class PhoneListAdapter(private val callback: PhoneInfoViewHolder.Callback): RecyclerView.Adapter<PhoneListAdapter.PhoneInfoViewHolder>() {
 

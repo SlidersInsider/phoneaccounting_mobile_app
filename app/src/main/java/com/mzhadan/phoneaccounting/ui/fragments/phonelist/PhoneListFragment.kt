@@ -9,9 +9,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.phoneaccounting.R
-import com.mzhadan.phoneaccounting.databinding.PhoneInfoListElementBinding
 import com.mzhadan.phoneaccounting.databinding.PhoneListFragmentBinding
-import com.mzhadan.phoneaccounting.models.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.ui.adapters.PhoneListAdapter
 import com.mzhadan.phoneaccounting.ui.fragments.phonedetails.PhoneDetailsFragment
 

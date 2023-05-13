@@ -3,7 +3,8 @@ package com.mzhadan.phoneaccounting.ui.fragments.phonelist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mzhadan.phoneaccounting.models.entities.PhoneInfo
+import androidx.room.Room
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.repository.impl.PhoneAccountingRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

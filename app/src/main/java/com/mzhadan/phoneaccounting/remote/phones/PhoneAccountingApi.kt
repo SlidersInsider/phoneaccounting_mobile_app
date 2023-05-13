@@ -1,6 +1,6 @@
-package com.mzhadan.phoneaccounting.api
+package com.mzhadan.phoneaccounting.remote.phones
 
-import com.mzhadan.phoneaccounting.models.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

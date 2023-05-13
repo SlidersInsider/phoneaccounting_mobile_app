@@ -1,6 +1,6 @@
 package com.mzhadan.phoneaccounting.repository
 
-import com.mzhadan.phoneaccounting.models.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 
 interface PhoneAccountingRepository {
     suspend fun getAllPhonesInfo(): List<PhoneInfo>

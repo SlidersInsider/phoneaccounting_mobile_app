@@ -1,4 +1,4 @@
-package com.mzhadan.phoneaccounting.models.entities
+package com.mzhadan.phoneaccounting.remote.entities
 
 data class SimCard(
     var inPhone: Boolean,
