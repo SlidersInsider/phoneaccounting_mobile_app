@@ -14,7 +14,6 @@ import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.ui.fragments.phonelist.PhoneListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.sdcardlist.SdcardListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.simcardlist.SimcardListFragment
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

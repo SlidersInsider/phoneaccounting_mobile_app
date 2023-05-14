@@ -4,13 +4,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
-import com.mzhadan.phoneaccounting.repository.impl.PhoneAccountingRepositoryImpl
+import com.mzhadan.phoneaccounting.repository.phones.PhoneAccountingRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel: ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val phoneInfoRepository: PhoneAccountingRepository
+): ViewModel() {
     var phoneInfoList = MutableLiveData<List<PhoneInfo>>()
-    private val phoneInfoRepositoryImpl = PhoneAccountingRepositoryImpl()
 
 //    init {
 //        viewModelScope.launch(Dispatchers.IO) {
@@ -21,7 +25,7 @@ class MainViewModel: ViewModel() {
 
     fun getPhoneInfoById(phoneId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val phoneInfoResponse = phoneInfoRepositoryImpl.getPhoneById(phoneId)
+            val phoneInfoResponse = phoneInfoRepository.getPhoneById(phoneId)
             phoneInfoList.postValue(phoneInfoResponse)
         }
     }

@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface PhoneAccountingApi {
+interface PhonesApi {
     @GET("phones/all")
     suspend fun getAllPhonesInfo(): List<PhoneInfo>
 

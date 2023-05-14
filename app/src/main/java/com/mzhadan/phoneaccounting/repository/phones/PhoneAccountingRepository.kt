@@ -1,4 +1,4 @@
-package com.mzhadan.phoneaccounting.repository
+package com.mzhadan.phoneaccounting.repository.phones
 
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 
