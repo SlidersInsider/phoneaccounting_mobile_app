@@ -6,17 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.phoneaccounting.R
 import com.mzhadan.phoneaccounting.databinding.PhoneDetailsFragmentBinding
 import com.mzhadan.phoneaccounting.databinding.PhoneListFragmentBinding
 import com.mzhadan.phoneaccounting.ui.fragments.phonelist.PhoneListViewModel
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PhoneDetailsFragment : Fragment() {
 
     lateinit var binding: PhoneDetailsFragmentBinding
-    private lateinit var phoneDetailsViewModel: PhoneDetailsViewModel
+    private val phoneDetailsViewModel: PhoneDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +39,6 @@ class PhoneDetailsFragment : Fragment() {
     }
 
     private fun setupViewModel(phoneId: Int) {
-        phoneDetailsViewModel = ViewModelProvider(this)[PhoneDetailsViewModel::class.java]
         phoneDetailsViewModel.getPhoneInfoById(phoneId)
 
         phoneDetailsViewModel.phoneDetailsList.observe(viewLifecycleOwner) { phoneInfoList ->

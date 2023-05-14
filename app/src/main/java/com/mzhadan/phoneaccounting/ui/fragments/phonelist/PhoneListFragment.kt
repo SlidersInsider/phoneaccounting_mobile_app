@@ -6,19 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.phoneaccounting.R
 import com.mzhadan.phoneaccounting.databinding.PhoneListFragmentBinding
+import com.mzhadan.phoneaccounting.local.entities.LocalPhoneInfo
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.ui.adapters.PhoneListAdapter
 import com.mzhadan.phoneaccounting.ui.fragments.phonedetails.PhoneDetailsFragment
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PhoneListFragment : Fragment() {
 
     lateinit var binding: PhoneListFragmentBinding
     private lateinit var phoneListAdapter: PhoneListAdapter
-    private lateinit var phoneListViewModel: PhoneListViewModel
+    private val phoneListViewModel: PhoneListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,16 +56,18 @@ class PhoneListFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        phoneListViewModel = ViewModelProvider(this)[PhoneListViewModel::class.java]
+        phoneListViewModel.remoteGetAllPhoneInfo()
 
         phoneListViewModel.phoneInfoList.observe(viewLifecycleOwner) { phoneInfoList ->
             if (phoneInfoList != null) {
                 phoneListAdapter.setData(phoneInfoList)
                 binding.phoneInfoRecyclerList.layoutManager = LinearLayoutManager(this.context)
                 binding.phoneInfoRecyclerList.adapter = phoneListAdapter
+                phoneListViewModel.localSaveAllPhoneInfo(phoneInfoList)
             } else {
-                Toast.makeText(context, "Failed to fetch data!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to fetch remote data!", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }

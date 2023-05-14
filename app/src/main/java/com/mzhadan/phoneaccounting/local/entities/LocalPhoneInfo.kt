@@ -1,8 +1,10 @@
 package com.mzhadan.phoneaccounting.local.entities
 
+import android.provider.ContactsContract.CommonDataKinds.Phone
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 
 @Entity(tableName = LocalPhoneInfo.TABLE_NAME)
 data class LocalPhoneInfo(
@@ -33,5 +35,13 @@ data class LocalPhoneInfo(
 ) {
     companion object {
         const val TABLE_NAME: String = "phones_info"
+
+        fun mapToPhoneInfo(localPhoneInfoList: List<LocalPhoneInfo>): List<PhoneInfo> =
+            localPhoneInfoList.map {
+                PhoneInfo(it.phoneId, it.model, it.manufacturer, it.osVersion,
+                    it.firmware, it.supportedArch, it.user, it.simSlotsCount,
+                    it.simcard1, it.simcard2, it.sdSlotsCount, it.sdcard)
+            }
+
     }
 }

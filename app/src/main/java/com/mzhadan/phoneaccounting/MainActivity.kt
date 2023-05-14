@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.telephony.TelephonyManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.mzhadan.phoneaccounting.databinding.ActivityMainBinding
@@ -13,12 +14,14 @@ import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.ui.fragments.phonelist.PhoneListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.sdcardlist.SdcardListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.simcardlist.SimcardListFragment
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
