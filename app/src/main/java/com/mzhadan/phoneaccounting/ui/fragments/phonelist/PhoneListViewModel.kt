@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mzhadan.phoneaccounting.local.AppDatabase
 import com.mzhadan.phoneaccounting.local.entities.LocalPhoneInfo
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
-import com.mzhadan.phoneaccounting.repository.phones.PhoneAccountingRepository
+import com.mzhadan.phoneaccounting.repository.phones.PhonesInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PhoneListViewModel @Inject constructor(
     private val roomDatabase: AppDatabase,
-    private val phoneInfoRepository: PhoneAccountingRepository
+    private val phoneInfoRepository: PhonesInfoRepository
 ): ViewModel() {
 
     var phoneInfoList = MutableLiveData<List<PhoneInfo>>()
@@ -41,6 +41,20 @@ class PhoneListViewModel @Inject constructor(
     fun localSaveAllPhoneInfo(phoneInfoList: List<PhoneInfo>) {
         viewModelScope.launch(Dispatchers.IO) {
             roomDatabase.phonesDao().saveAllPhonesInfo(PhoneInfo.mapToLocalPhoneInfo(phoneInfoList))
+        }
+    }
+
+    @Synchronized
+    fun deletePhoneInfoById(phoneId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            phoneInfoRepository.deletePhoneInfoById(phoneId)
+        }
+    }
+
+    @Synchronized
+    fun updatePhoneInfoUser(phoneId: Int, name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            phoneInfoRepository.updatePhoneInfoUser(phoneId, name)
         }
     }
 

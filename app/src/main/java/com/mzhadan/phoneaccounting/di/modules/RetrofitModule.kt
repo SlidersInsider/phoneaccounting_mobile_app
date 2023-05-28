@@ -2,6 +2,7 @@ package com.mzhadan.phoneaccounting.di.modules
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.mzhadan.phoneaccounting.remote.notifications.NotificationsApi
 import com.mzhadan.phoneaccounting.remote.phones.PhonesApi
 import dagger.Module
 import dagger.Provides
@@ -38,5 +39,9 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun providePhonesApi(retrofit: Retrofit) = retrofit.create(PhonesApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideNotificationsApi(retrofit: Retrofit) = retrofit.create(NotificationsApi::class.java)
 
 }

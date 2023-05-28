@@ -1,15 +1,20 @@
 package com.mzhadan.phoneaccounting.ui.fragments.phonelist
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,18 +41,15 @@ class PhoneListFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-        if (isNetworkConnected()) {
-            getStartRemoteData(false)
-        } else {
-//            binding.loadingProgressBar.visibility = View.GONE
-//            binding.noInternetText.visibility = View.VISIBLE
-            getStartLocalData(false)
-        }
+        val telephonyManager = requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        println("PhoneNumber -> ${telephonyManager.line1Number}")
 
+        setupRecyclerView()
+        getData(false)
         setupRefreshLayout()
     }
 
@@ -94,17 +96,69 @@ class PhoneListFragment : Fragment() {
                 }
             }
 
-            override fun onEditUserName(name: String) {
+            override fun onEditUserName(phoneId: Int, name: String) {
+                createEditDialog(phoneId, name)
                 Toast.makeText(context, "edit user clicked!", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onLongPhoneCardClicked(phoneInfo: PhoneInfo) {
+            override fun onLongPhoneCardClicked(phoneId: Int) {
+                createDeleteDialog(phoneId)
                 Toast.makeText(context, "long card clicked!", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun getStartRemoteData(isRefresh: Boolean) {
+    private fun createEditDialog(phoneId: Int, name: String) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.apply {
+            setTitle("Update username")
+            val editText =  EditText(requireContext())
+            editText.setText(name)
+            setMessage("Enter new username")
+            setView(editText)
+            setPositiveButton("Edit") { dialog, _ ->
+                if (isNetworkConnected()) {
+                    phoneListViewModel.updatePhoneInfoUser(phoneId, editText.text.toString())
+                } else {
+                    Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
+                }
+                dialog.cancel()
+            }
+            setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+        }.show()
+    }
+
+    private fun createDeleteDialog(phoneId: Int) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.apply {
+            setTitle("Delete phone info")
+            setMessage("Delete phone info?")
+            setPositiveButton("Delete") { dialog, _ ->
+                if (isNetworkConnected()) {
+                    phoneListViewModel.deletePhoneInfoById(phoneId)
+                } else {
+                    Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
+                }
+                dialog.cancel()
+            }
+            setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+        }.show()
+    }
+
+    private fun getData(isRefresh: Boolean) {
+        if (isNetworkConnected()) {
+            getRemoteData(isRefresh)
+        } else {
+            Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
+            getLocalData(isRefresh)
+        }
+    }
+
+    private fun getRemoteData(isRefresh: Boolean) {
         phoneListViewModel.remoteGetAllPhoneInfo()
 
         phoneListViewModel.phoneInfoList.observe(viewLifecycleOwner) { phoneInfoList ->
@@ -124,7 +178,7 @@ class PhoneListFragment : Fragment() {
         Toast.makeText(context, "Remote data", Toast.LENGTH_SHORT).show()
     }
 
-    private fun getStartLocalData(isRefresh: Boolean) {
+    private fun getLocalData(isRefresh: Boolean) {
         phoneListViewModel.localGetAllPhoneInfo()
 
         phoneListViewModel.localPhoneInfoList.observe(viewLifecycleOwner) { phoneInfoList ->
@@ -147,14 +201,7 @@ class PhoneListFragment : Fragment() {
         binding.phoneInfoSwipeRefresh.setOnRefreshListener {
             binding.noInternetText.visibility = View.GONE
             binding.loadingProgressBar.visibility = View.VISIBLE
-            if (isNetworkConnected()) {
-                getStartRemoteData(true)
-            } else {
-                getStartLocalData(true)
-//                binding.phoneInfoSwipeRefresh.isRefreshing = false
-//                binding.loadingProgressBar.visibility = View.GONE
-//                binding.noInternetText.visibility = View.VISIBLE
-            }
+            getData(true)
         }
     }
 }

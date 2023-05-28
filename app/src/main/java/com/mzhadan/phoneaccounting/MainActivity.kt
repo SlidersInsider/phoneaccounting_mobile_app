@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.mzhadan.phoneaccounting.databinding.ActivityMainBinding
 import com.mzhadan.phoneaccounting.models.*
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.ui.fragments.notificationlist.NotificationListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.phonelist.PhoneListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.sdcardlist.SdcardListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.simcardlist.SimcardListFragment
@@ -113,6 +114,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.sdcardListPageMenuItem -> {
                     openFragment(SdcardListFragment(), "SdcardListFragment")
+                    true
+                }
+                R.id.notificationListPageMenuItem -> {
+                    openFragment(NotificationListFragment(), "NotificationListFragment")
                     true
                 }
                 else -> false

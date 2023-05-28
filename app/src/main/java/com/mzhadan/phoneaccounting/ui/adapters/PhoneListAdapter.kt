@@ -2,6 +2,7 @@ package com.mzhadan.phoneaccounting.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.WindowId
 import androidx.recyclerview.widget.RecyclerView
 import com.mzhadan.phoneaccounting.databinding.PhoneInfoListElementBinding
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
@@ -36,8 +37,8 @@ class PhoneListAdapter(private val callback: PhoneInfoViewHolder.Callback): Recy
 
         interface Callback{
             fun onPhoneInfoClicked(phoneInfo: PhoneInfo)
-            fun onEditUserName(name: String)
-            fun onLongPhoneCardClicked(phoneInfo: PhoneInfo)
+            fun onEditUserName(phoneId: Int, name: String)
+            fun onLongPhoneCardClicked(phoneId: Int)
         }
 
         fun bind(phoneInfo: PhoneInfo){
@@ -46,15 +47,19 @@ class PhoneListAdapter(private val callback: PhoneInfoViewHolder.Callback): Recy
             binding.phone1.text = phoneInfo.simcard1
             binding.phone2.text = phoneInfo.simcard2
             binding.sdcard.text = phoneInfo.sdcard
-            binding.user.text = phoneInfo.user
+            var username = phoneInfo.user
+            if (username[0].equals('\"')) {
+                username = username.substring(1, username.length - 1)
+            }
+            binding.user.text = username
             binding.user.setOnClickListener {
-                callback.onEditUserName(phoneInfo.user)
+                callback.onEditUserName(phoneInfo.phoneId, username)
             }
             binding.openPhoneInfoBtn.setOnClickListener {
                 callback.onPhoneInfoClicked(phoneInfo)
             }
             binding.root.setOnLongClickListener {
-                callback.onLongPhoneCardClicked(phoneInfo)
+                callback.onLongPhoneCardClicked(phoneInfo.phoneId)
                 true
             }
         }

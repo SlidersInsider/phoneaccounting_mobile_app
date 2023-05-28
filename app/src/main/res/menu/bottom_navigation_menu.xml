@@ -6,6 +6,11 @@
         android:icon="@drawable/phone_list_page_icon"
         android:title="Phones"/>
     <item
+        android:id="@+id/notificationListPageMenuItem"
+        android:enabled="true"
+        android:icon="@drawable/notification_list_page_icon"
+        android:title="Notifications"/>
+    <item
         android:id="@+id/simcardListPageMenuItem"
         android:enabled="true"
         android:icon="@drawable/simcard_list_page_icon"
