@@ -28,17 +28,26 @@ class PhoneDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val phoneId: Int = requireArguments().getInt("phoneId")
-        setupViewModel(phoneId)
+        getData(phoneId)
 
     }
 
-    private fun setupViewModel(phoneId: Int) {
+    private fun getData(phoneId: Int) {
         phoneDetailsViewModel.getPhoneInfoById(phoneId)
 
         phoneDetailsViewModel.phoneDetailsList.observe(viewLifecycleOwner) { phoneInfoList ->
             if (phoneInfoList != null) {
-                val phoneName = "${phoneInfoList[0].manufacturer} ${phoneInfoList[0].model}"
-                binding.phoneNameText.text = phoneName
+                binding.loadingProgressBar.visibility = View.GONE
+                binding.model.text = "Model: ${phoneInfoList[0].model}"
+                binding.manufacturer.text = "Manufacturer: ${phoneInfoList[0].manufacturer}"
+                binding.osVersion.text = "Os version: ${phoneInfoList[0].osVersion}"
+                binding.firmware.text = "Firmware: ${phoneInfoList[0].firmware}"
+                binding.supportedArch.text = "Supported arch: ${phoneInfoList[0].supportedArch}"
+                binding.simSlotsCount.text = "Sim slots count: ${phoneInfoList[0].simSlotsCount}"
+                binding.simcard1.text = "Simcard 1: ${phoneInfoList[0].simcard1}"
+                binding.simcard2.text = "Simcard 2: ${phoneInfoList[0].simcard2}"
+                binding.sdSlotsCount.text = "Sd slots count: ${phoneInfoList[0].sdSlotsCount}"
+                binding.sdcard.text = "Sdcard: ${phoneInfoList[0].sdcard}"
             } else {
                 Toast.makeText(context, "Failed to fetch data!", Toast.LENGTH_SHORT).show()
             }

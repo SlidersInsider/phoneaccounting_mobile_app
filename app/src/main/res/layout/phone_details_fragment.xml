@@ -6,13 +6,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.phonedetails.PhoneDetailsFragment">
 
-    <TextView
-        android:id="@+id/phoneNameText"
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/manufacturer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/osVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/firmware"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/supportedArch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/simSlotsCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/simcard1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/simcard2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/sdSlotsCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/sdcard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

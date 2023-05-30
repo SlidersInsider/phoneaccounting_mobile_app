@@ -3,6 +3,7 @@ package com.mzhadan.phoneaccounting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mzhadan.phoneaccounting.remote.entities.Notification
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.repository.phones.PhonesInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,9 +31,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-//    fun addNewPhoneData(phoneInfo: PhoneInfo) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            phoneInfoRepositoryImpl.addNewPhoneInfo(phoneInfo)
-//        }
-//    }
+    fun addNewPhoneData(phoneInfo: PhoneInfo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            phoneInfoRepository.addNewPhoneInfo(phoneInfo)
+        }
+    }
 }

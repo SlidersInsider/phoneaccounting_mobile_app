@@ -1,13 +1,7 @@
 package com.mzhadan.phoneaccounting.ui.fragments.phonelist
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.DialogInterface
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.phoneaccounting.R
+import com.mzhadan.phoneaccounting.common.CommonFunc.Companion.isNetworkConnected
 import com.mzhadan.phoneaccounting.databinding.PhoneListFragmentBinding
 import com.mzhadan.phoneaccounting.local.entities.LocalPhoneInfo
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
@@ -45,44 +39,15 @@ class PhoneListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val telephonyManager = requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        println("PhoneNumber -> ${telephonyManager.line1Number}")
-
         setupRecyclerView()
         getData(false)
         setupRefreshLayout()
     }
 
-    private fun isNetworkConnected(): Boolean {
-        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            if (capabilities != null) {
-                when {
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                        return true
-                    }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                        return true
-                    }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                        return true
-                    }
-                }
-            }
-        } else {
-            val activeNetworkInfo = connectivityManager.activeNetworkInfo
-            if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                return true
-            }
-        }
-        return false
-    }
-
     private fun setupRecyclerView() {
         phoneListAdapter = PhoneListAdapter(object: PhoneListAdapter.PhoneInfoViewHolder.Callback {
             override fun onPhoneInfoClicked(phoneInfo: PhoneInfo) {
-                if (isNetworkConnected()) {
+                if (isNetworkConnected(context)) {
                     val phoneDetailsFragment = PhoneDetailsFragment()
                     val phoneBundle = Bundle()
                     phoneBundle.putInt("phoneId", phoneInfo.phoneId)
@@ -117,7 +82,7 @@ class PhoneListFragment : Fragment() {
             setMessage("Enter new username")
             setView(editText)
             setPositiveButton("Edit") { dialog, _ ->
-                if (isNetworkConnected()) {
+                if (isNetworkConnected(context)) {
                     phoneListViewModel.updatePhoneInfoUser(phoneId, editText.text.toString())
                 } else {
                     Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
@@ -136,7 +101,7 @@ class PhoneListFragment : Fragment() {
             setTitle("Delete phone info")
             setMessage("Delete phone info?")
             setPositiveButton("Delete") { dialog, _ ->
-                if (isNetworkConnected()) {
+                if (isNetworkConnected(context)) {
                     phoneListViewModel.deletePhoneInfoById(phoneId)
                 } else {
                     Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
@@ -150,7 +115,7 @@ class PhoneListFragment : Fragment() {
     }
 
     private fun getData(isRefresh: Boolean) {
-        if (isNetworkConnected()) {
+        if (isNetworkConnected(context)) {
             getRemoteData(isRefresh)
         } else {
             Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
@@ -199,7 +164,6 @@ class PhoneListFragment : Fragment() {
 
     private fun setupRefreshLayout() {
         binding.phoneInfoSwipeRefresh.setOnRefreshListener {
-            binding.noInternetText.visibility = View.GONE
             binding.loadingProgressBar.visibility = View.VISIBLE
             getData(true)
         }
