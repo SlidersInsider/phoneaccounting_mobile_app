@@ -16,6 +16,8 @@ data class LocalPhoneInfo(
     val manufacturer: String,
     @ColumnInfo(name = "osVersion")
     val osVersion: String,
+    @ColumnInfo(name = "convertedOsVersion")
+    var convertedOsVersion: String,
     @ColumnInfo(name = "firmware")
     val firmware: String,
     @ColumnInfo(name = "supportedArch")
@@ -30,8 +32,8 @@ data class LocalPhoneInfo(
     var simcard2: String,
     @ColumnInfo(name = "sdSlotsCount")
     val sdSlotsCount: Int,
-    @ColumnInfo(name = "sdcard")
-    val sdcard: String
+    @ColumnInfo(name = "sdcardSerialNumber")
+    var sdcardSerialNumber: String
 ) {
     companion object {
         const val TABLE_NAME: String = "phones_info"
@@ -39,8 +41,9 @@ data class LocalPhoneInfo(
         fun mapToPhoneInfo(localPhoneInfoList: List<LocalPhoneInfo>): List<PhoneInfo> =
             localPhoneInfoList.map {
                 PhoneInfo(it.phoneId, it.model, it.manufacturer, it.osVersion,
-                    it.firmware, it.supportedArch, it.user, it.simSlotsCount,
-                    it.simcard1, it.simcard2, it.sdSlotsCount, it.sdcard)
+                    it.convertedOsVersion, it.firmware, it.supportedArch, it.user,
+                    it.simSlotsCount, it.simcard1, it.simcard2, it.sdSlotsCount,
+                    it.sdcardSerialNumber)
             }
 
     }

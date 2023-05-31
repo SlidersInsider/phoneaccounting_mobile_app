@@ -1,8 +1,9 @@
 package com.mzhadan.phoneaccounting.remote.entities
 
 data class SimCard(
-    var inPhone: Boolean,
-    val phoneName: String,
-    val number: String,
-    var accounts: String
+    var simcardId: Int,
+    var operatorName: String,
+    var number: String,
+    var isLocked: String,
+    var inPhone: String
 )

@@ -7,6 +7,7 @@ data class PhoneInfo(
     val model: String,
     val manufacturer: String,
     val osVersion: String,
+    var convertedOsVersion: String,
     val firmware: String,
     val supportedArch: String,
     val user: String,
@@ -14,14 +15,15 @@ data class PhoneInfo(
     var simcard1: String,
     var simcard2: String,
     val sdSlotsCount: Int,
-    val sdcard: String
+    var sdcardSerialNumber: String
 ) {
     companion object {
         fun mapToLocalPhoneInfo(phoneInfoList: List<PhoneInfo>): List<LocalPhoneInfo> =
             phoneInfoList.map {
                 LocalPhoneInfo(it.phoneId, it.model, it.manufacturer, it.osVersion,
-                    it.firmware, it.supportedArch, it.user, it.simSlotsCount,
-                    it.simcard1, it.simcard2, it.sdSlotsCount, it.sdcard)
+                    it.convertedOsVersion, it.firmware, it.supportedArch, it.user,
+                    it.simSlotsCount, it.simcard1, it.simcard2, it.sdSlotsCount,
+                    it.sdcardSerialNumber)
             }
     }
 }

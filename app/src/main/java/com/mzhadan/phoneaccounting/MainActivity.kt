@@ -22,12 +22,13 @@ import androidx.fragment.app.Fragment
 import com.mzhadan.phoneaccounting.databinding.ActivityMainBinding
 import com.mzhadan.phoneaccounting.models.*
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.SdCard
+import com.mzhadan.phoneaccounting.remote.entities.SimCard
 import com.mzhadan.phoneaccounting.ui.fragments.notificationlist.NotificationListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.phonelist.PhoneListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.sdcardlist.SdcardListFragment
 import com.mzhadan.phoneaccounting.ui.fragments.simcardlist.SimcardListFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.security.Key
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -109,9 +110,9 @@ class MainActivity : AppCompatActivity() {
         var simcard2 = ""
         for (i in 0 until simInfo.simSlotsCount) {
             if (i == 0) {
-                simcard1 = simInfo.simCards[i].simPhoneNumber
+                simcard1 = simInfo.simCards[i].number
             } else if (i == 1) {
-                simcard2 = simInfo.simCards[i].simPhoneNumber
+                simcard2 = simInfo.simCards[i].number
             }
         }
         val sdInfo = getSDCardInfo()
@@ -121,10 +122,40 @@ class MainActivity : AppCompatActivity() {
             0
         }
         val phoneInfo = PhoneInfo(0, systemInfo.model, systemInfo.manufacturer,
-            systemInfo.osVersion, systemInfo.firmWare, systemInfo.supportedArch, user,
-            simInfo.simSlotsCount, simcard1, simcard2, sdCount, sdInfo.name)
+            systemInfo.osVersion, systemInfo.osVersionConverted, systemInfo.firmWare,
+            systemInfo.supportedArch, user, simInfo.simSlotsCount, simcard1,
+            simcard2, sdCount, sdInfo.serialNumber)
 
+        var simCard1: SimCard
+        var simCard2: SimCard
+        if (simInfo.simSlotsCount == 2) {
+            simCard1 = SimCard(0, simInfo.simCards[0].provider, simcard1,
+                "-1", if (simInfo.simCards[0].isInserted) "1" else "-1")
+            simCard2 = SimCard(0, simInfo.simCards[1].provider, simcard2,
+                "-1", if (simInfo.simCards[1].isInserted) "1" else "-1")
+        } else {
+            simCard1 = SimCard(0, simInfo.simCards[0].provider, simcard1,
+                "-1", if (simInfo.simCards[0].isInserted) "1" else "-1")
+            simCard2 = SimCard(0, "", "", "", "")
+        }
+
+        val sdCard = SdCard(0, sdInfo.name, sdInfo.serialNumber, sdInfo.size.toString(),
+            if (sdInfo.isInserted) "1" else "-1")
+
+        pushNewData(phoneInfo, simCard1, simCard2, sdCard)
+    }
+
+    private fun pushNewData(phoneInfo: PhoneInfo, simCard1: SimCard, simCard2: SimCard, sdCard: SdCard) {
         mainViewModel.addNewPhoneData(phoneInfo)
+        if (!simCard1.number.equals("-1")) {
+            mainViewModel.addNewSimCard(simCard1)
+        }
+        if (!simCard2.number.equals("-1")) {
+            mainViewModel.addNewSimCard(simCard2)
+        }
+        if (!sdCard.serialNumber.equals("-1")) {
+            mainViewModel.addNewSdCard(sdCard)
+        }
     }
 
     private fun getPhoneSystemInfo(): SystemInfo {
@@ -148,15 +179,34 @@ class MainActivity : AppCompatActivity() {
             telephonyManager.phoneCount
         }
 
+        val providers = getMobileProviders()
+
         val simCardsInfo = ArrayList<SimInfo>()
         for (i in 0 until simSlotsCount) {
             val simState = telephonyManager.getSimState(i)
             val inPhone = checkIsInsert(simState)
             val stringSimState = convertSimStateToString(simState)
             val simPhoneNumber = getPhoneNumber(i)
-            simCardsInfo.add(SimInfo(i, inPhone, stringSimState, simPhoneNumber))
+            simCardsInfo.add(SimInfo(i, inPhone, stringSimState, simPhoneNumber, providers[i]))
         }
         return SimCardsInfo(simCardsInfo, simSlotsCount)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getMobileProviders(): ArrayList<String> {
+        val subManager = getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+        val activeSubs = subManager.activeSubscriptionInfoList
+        val providers = ArrayList<String>()
+        if (activeSubs.isNotEmpty()) {
+            if (activeSubs.size >= 2) {
+                providers.add(activeSubs[0].carrierName.toString())
+                providers.add(activeSubs[1].carrierName.toString())
+            } else {
+                providers.add(activeSubs[0].carrierName.toString())
+                providers.add("")
+            }
+        }
+        return providers
     }
 
     private fun getPhoneNumber(slotPos: Int): String {
@@ -171,7 +221,7 @@ class MainActivity : AppCompatActivity() {
             null
         )
 
-        var phoneNumber = "no number"
+        var phoneNumber = "-1"
         cursor?.use {
             if (it.moveToFirst()) {
                 val index = it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
@@ -233,7 +283,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        return SDInfo(false, false, "no sdcard", 0, "")
+        return SDInfo(false, false, "", 0, "-1")
     }
 
     private fun getSdCardTotalSize(): Int {

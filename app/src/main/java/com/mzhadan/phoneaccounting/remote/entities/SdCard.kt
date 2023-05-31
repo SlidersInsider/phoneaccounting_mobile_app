@@ -1,8 +1,9 @@
 package com.mzhadan.phoneaccounting.remote.entities
 
 data class SdCard(
-    var inPhone: Boolean,
-    val phoneName: String,
-    val serialNumber: String,
-    val size: String
+    var sdcardId: Int,
+    var name: String,
+    var serialNumber: String,
+    var size: String,
+    var inPhone: String
 )

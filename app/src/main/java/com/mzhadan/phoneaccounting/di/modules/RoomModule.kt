@@ -20,6 +20,6 @@ class RoomModule {
         Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "phone_info_database"
+            "phone_info_db"
         ).build()
 }

@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <TextView
-            android:id="@+id/model"
+            android:id="@+id/manufacturer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_200"
@@ -32,7 +32,7 @@
             android:padding="5dp"
             android:layout_weight="1"/>
         <TextView
-            android:id="@+id/manufacturer"
+            android:id="@+id/model"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_200"
@@ -104,7 +104,25 @@
             android:padding="5dp"
             android:layout_weight="1"/>
         <TextView
-            android:id="@+id/sdcard"
+            android:id="@+id/sdName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/sdSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_200"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/sdSerialNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_200"

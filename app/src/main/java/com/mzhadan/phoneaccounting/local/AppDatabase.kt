@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.mzhadan.phoneaccounting.local.entities.LocalPhoneInfo
 import com.mzhadan.phoneaccounting.local.phones.PhonesDao
 
-@Database(entities = [LocalPhoneInfo::class], version = 1)
+@Database(entities = [LocalPhoneInfo::class], version = 2)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun phonesDao(): PhonesDao
 }

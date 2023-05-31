@@ -8,6 +8,7 @@ data class SimCardsInfo(
 data class SimInfo(
     val slotIndex: Int,
     val isInserted: Boolean,
-    val simState: String,
-    val simPhoneNumber: String
+    val state: String,
+    val number: String,
+    val provider: String
 )

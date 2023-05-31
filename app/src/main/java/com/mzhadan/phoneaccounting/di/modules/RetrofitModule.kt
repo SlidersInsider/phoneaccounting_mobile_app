@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mzhadan.phoneaccounting.remote.notifications.NotificationsApi
 import com.mzhadan.phoneaccounting.remote.phones.PhonesApi
+import com.mzhadan.phoneaccounting.remote.sdcards.SdCardsApi
+import com.mzhadan.phoneaccounting.remote.simcards.SimCardsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +45,13 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideNotificationsApi(retrofit: Retrofit) = retrofit.create(NotificationsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSimCardsApi(retrofit: Retrofit) = retrofit.create(SimCardsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSdCardsApi(retrofit: Retrofit) = retrofit.create(SdCardsApi::class.java)
 
 }

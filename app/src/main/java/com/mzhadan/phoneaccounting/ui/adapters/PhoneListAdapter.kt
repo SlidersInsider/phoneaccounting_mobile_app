@@ -48,7 +48,7 @@ class PhoneListAdapter(
             binding.androidVersion.text = "${phoneInfo.osVersion}"
             binding.phone1.text = phoneInfo.simcard1
             binding.phone2.text = phoneInfo.simcard2
-            binding.sdcard.text = phoneInfo.sdcard
+            binding.sdcard.text = phoneInfo.sdcardSerialNumber
             var username = phoneInfo.user
             if (username[0].equals('\"')) {
                 username = username.substring(1, username.length - 1)
