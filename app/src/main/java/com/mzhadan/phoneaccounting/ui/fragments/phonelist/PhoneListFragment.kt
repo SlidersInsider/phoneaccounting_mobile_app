@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.marginStart
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhadan.phoneaccounting.R
@@ -63,12 +64,10 @@ class PhoneListFragment : Fragment() {
 
             override fun onEditUserName(phoneId: Int, name: String) {
                 createEditDialog(phoneId, name)
-                Toast.makeText(context, "edit user clicked!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onLongPhoneCardClicked(phoneId: Int) {
                 createDeleteDialog(phoneId)
-                Toast.makeText(context, "long card clicked!", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -140,7 +139,6 @@ class PhoneListFragment : Fragment() {
                 Toast.makeText(context, "Failed to fetch remote data!", Toast.LENGTH_SHORT).show()
             }
         }
-        Toast.makeText(context, "Remote data", Toast.LENGTH_SHORT).show()
     }
 
     private fun getLocalData(isRefresh: Boolean) {
@@ -159,7 +157,6 @@ class PhoneListFragment : Fragment() {
                 Toast.makeText(context, "Failed to fetch remote data!", Toast.LENGTH_SHORT).show()
             }
         }
-        Toast.makeText(context, "Local data", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupRefreshLayout() {
