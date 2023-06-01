@@ -40,9 +40,19 @@ class SdcardListFragment : Fragment() {
         if (CommonFunc.isNetworkConnected(context)) {
             getData(false)
         } else {
+            setupEmptyRecycler(false)
             Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
         }
         setupRefreshLayout()
+    }
+
+    private fun setupEmptyRecycler(isRefresh: Boolean) {
+        binding.loadingProgressBar.visibility = View.GONE
+        sdCardListAdapter.setData(emptyList())
+        binding.sdcardRecyclerList.adapter = sdCardListAdapter
+        if (isRefresh) {
+            binding.sdcardSwipeRefresh.isRefreshing = false
+        }
     }
 
     private fun setupRecyclerView() {
@@ -93,7 +103,12 @@ class SdcardListFragment : Fragment() {
     private fun setupRefreshLayout() {
         binding.sdcardSwipeRefresh.setOnRefreshListener {
             binding.loadingProgressBar.visibility = View.VISIBLE
-            getData(true)
+            if (CommonFunc.isNetworkConnected(context)) {
+                getData(true)
+            } else {
+                setupEmptyRecycler(true)
+                Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

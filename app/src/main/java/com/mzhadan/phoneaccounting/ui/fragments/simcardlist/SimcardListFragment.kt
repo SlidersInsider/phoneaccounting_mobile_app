@@ -44,9 +44,19 @@ class SimcardListFragment : Fragment() {
         if (CommonFunc.isNetworkConnected(context)) {
             getData(false)
         } else {
+            setupEmptyRecycler(false)
             Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
         }
         setupRefreshLayout()
+    }
+
+    private fun setupEmptyRecycler(isRefresh: Boolean) {
+        binding.loadingProgressBar.visibility = View.GONE
+        simCardListAdapter.setData(emptyList())
+        binding.simcardRecyclerList.adapter = simCardListAdapter
+        if (isRefresh) {
+            binding.simcardSwipeRefresh.isRefreshing = false
+        }
     }
 
     private fun setupRecyclerView() {
@@ -127,7 +137,12 @@ class SimcardListFragment : Fragment() {
     private fun setupRefreshLayout() {
         binding.simcardSwipeRefresh.setOnRefreshListener {
             binding.loadingProgressBar.visibility = View.VISIBLE
-            getData(true)
+            if (CommonFunc.isNetworkConnected(context)) {
+                getData(true)
+            } else {
+                setupEmptyRecycler(true)
+                Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

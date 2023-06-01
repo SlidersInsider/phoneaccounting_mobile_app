@@ -35,9 +35,19 @@ class NotificationListFragment : Fragment() {
         if (CommonFunc.isNetworkConnected(context)) {
             getData(false)
         } else {
+            setupEmptyRecycler(false)
             Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
         }
         setupRefreshLayout()
+    }
+
+    private fun setupEmptyRecycler(isRefresh: Boolean) {
+        binding.loadingProgressBar.visibility = View.GONE
+        notificationListAdapter.setData(emptyList())
+        binding.notificationRecyclerList.adapter = notificationListAdapter
+        if (isRefresh) {
+            binding.notificationSwipeRefresh.isRefreshing = false
+        }
     }
 
     private fun setupRecyclerView() {
@@ -68,7 +78,12 @@ class NotificationListFragment : Fragment() {
     private fun setupRefreshLayout() {
         binding.notificationSwipeRefresh.setOnRefreshListener {
             binding.loadingProgressBar.visibility = View.VISIBLE
-            getData(true)
+            if (CommonFunc.isNetworkConnected(context)) {
+                getData(true)
+            } else {
+                setupEmptyRecycler(true)
+                Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
