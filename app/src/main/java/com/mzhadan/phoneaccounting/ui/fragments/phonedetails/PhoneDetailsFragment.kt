@@ -38,7 +38,8 @@ class PhoneDetailsFragment : Fragment() {
         phoneDetailsViewModel.getPhoneInfoById(phoneId)
 
         phoneData()
-        simData()
+        sim1Data()
+        sim2Data()
         sdData()
     }
 
@@ -53,10 +54,10 @@ class PhoneDetailsFragment : Fragment() {
                 binding.supportedArch.text = "Supported arch: ${phoneInfoList[0].supportedArch}"
                 binding.simSlotsCount.text = "Sim slots count: ${phoneInfoList[0].simSlotsCount}"
                 if (!phoneInfoList[0].simcard1.equals("-1")) {
-                    phoneDetailsViewModel.getSimcardByNumber(phoneInfoList[0].simcard1)
+                    phoneDetailsViewModel.getSimcardByNumber(phoneInfoList[0].simcard1, 1)
                 }
                 if (!phoneInfoList[0].simcard2.equals("-1")) {
-                    phoneDetailsViewModel.getSimcardByNumber(phoneInfoList[0].simcard2)
+                    phoneDetailsViewModel.getSimcardByNumber(phoneInfoList[0].simcard2, 2)
                 }
                 binding.sdSlotsCount.text = "Sd slots count: ${phoneInfoList[0].sdSlotsCount}"
                 if (!phoneInfoList[0].sdcardSerialNumber.equals("-1")) {
@@ -70,32 +71,21 @@ class PhoneDetailsFragment : Fragment() {
         }
     }
 
-    private fun simData() {
-        phoneDetailsViewModel.simcardsList.observe(viewLifecycleOwner) { simcardsList ->
-            if (simcardsList.size == 2) {
+    private fun sim1Data() {
+        phoneDetailsViewModel.simcard1List.observe(viewLifecycleOwner) { simcardsList ->
+            if (simcardsList != null) {
                 binding.simcard1.text = "Simcard 1: ${simcardsList[0].number} (${simcardsList[0].operatorName})"
-//                if (simcardsList[0].isLocked.equals("1")) {
-//                    binding.simcard1.setTextColor(Color.parseColor("#b10404"))
-//                } else {
-//                    binding.simcard1.setTextColor(Color.BLACK)
-//                }
-
-                binding.simcard2.text = "Simcard 2: ${simcardsList[1].number} (${simcardsList[1].operatorName})"
-//                if (simcardsList[1].isLocked.equals("1")) {
-//                    binding.simcard2.setTextColor(Color.parseColor("#b10404"))
-//                } else {
-//                    binding.simcard2.setTextColor(Color.BLACK)
-//                }
-            } else if (simcardsList.size == 1){
-                binding.simcard1.text = "Simcard 1: ${simcardsList[0].number} (${simcardsList[0].operatorName})"
-//                if (simcardsList[0].isLocked.equals("1")) {
-//                    binding.simcard1.setTextColor(Color.parseColor("#b10404"))
-//                } else {
-//                    binding.simcard1.setTextColor(Color.BLACK)
-//                }
-                binding.simcard2.text = "Simcard 2: no sim"
             } else {
                 binding.simcard1.text = "Simcard 1: no sim"
+            }
+        }
+    }
+
+    private fun sim2Data() {
+        phoneDetailsViewModel.simcard2List.observe(viewLifecycleOwner) { simcardsList ->
+            if (simcardsList != null) {
+                binding.simcard2.text = "Simcard 2: ${simcardsList[0].number} (${simcardsList[0].operatorName})"
+            } else {
                 binding.simcard2.text = "Simcard 2: no sim"
             }
         }
@@ -103,7 +93,7 @@ class PhoneDetailsFragment : Fragment() {
 
     private fun sdData() {
         phoneDetailsViewModel.sdCardsList.observe(viewLifecycleOwner) { sdcardsList ->
-            if (sdcardsList.size == 1) {
+            if (sdcardsList != null) {
                 binding.sdName.text = "Sd card: ${sdcardsList[0].name}"
                 binding.sdSize.text = "Size: ${sdcardsList[0].size}"
                 binding.sdSerialNumber.text = "Serial number: ${sdcardsList[0].serialNumber}"

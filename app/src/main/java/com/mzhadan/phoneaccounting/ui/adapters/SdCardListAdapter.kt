@@ -41,9 +41,9 @@ class SdCardListAdapter(
         }
 
         fun bind(sdCard: SdCard) {
-            binding.sdName.text = sdCard.name
-            binding.sdSize.text = sdCard.size
-            binding.sdSerialNumber.text = sdCard.serialNumber
+            binding.sdName.text = "Name: ${sdCard.name}"
+            binding.sdSize.text = "Size: ${sdCard.size}"
+            binding.sdSerialNumber.text = "Serial number: ${sdCard.serialNumber}"
             binding.root.setOnLongClickListener {
                 callback.onDelete(sdCard.sdcardId)
                 true

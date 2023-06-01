@@ -22,7 +22,8 @@ class PhoneDetailsViewModel @Inject constructor(
 ): ViewModel() {
 
     var phoneInfoList = MutableLiveData<List<PhoneInfo>>()
-    var simcardsList = MutableLiveData<List<SimCard>>()
+    var simcard1List = MutableLiveData<List<SimCard>>()
+    var simcard2List = MutableLiveData<List<SimCard>>()
     var sdCardsList = MutableLiveData<List<SdCard>>()
 
     @Synchronized
@@ -34,10 +35,14 @@ class PhoneDetailsViewModel @Inject constructor(
     }
 
     @Synchronized
-    fun getSimcardByNumber(number: String) {
+    fun getSimcardByNumber(number: String, numberCounter: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val simcardResponse = simCardsRepository.getSimCardByNumber(number)
-            simcardsList.postValue(simcardResponse)
+            if (numberCounter == 1) {
+                simcard1List.postValue(simcardResponse)
+            } else {
+                simcard2List.postValue(simcardResponse)
+            }
         }
     }
 

@@ -1,10 +1,12 @@
 package com.mzhadan.phoneaccounting.ui.fragments.simcardlist
 
+import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
@@ -49,8 +51,8 @@ class SimcardListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         simCardListAdapter = SimCardListAdapter(object: SimCardListAdapter.SimcardViewHolder.Callback {
-            override fun onSimLock(isLocked: String, simcardId: Int) {
-                createLockDialog(isLocked, simcardId)
+            override fun onSimLock(isLocked: String, simcardId: Int, imageButton: ImageButton) {
+                createLockDialog(isLocked, simcardId, imageButton)
             }
 
             override fun onDelete(simcardId: Int) {
@@ -59,7 +61,7 @@ class SimcardListFragment : Fragment() {
         })
     }
 
-    private fun createLockDialog(isLocked: String, simcardId: Int) {
+    private fun createLockDialog(isLocked: String, simcardId: Int, imageButton: ImageButton) {
         val alertDialog = AlertDialog.Builder(requireContext())
         val isLockedFlag = if (isLocked.equals("-1")) false else true
         alertDialog.apply {
@@ -67,7 +69,13 @@ class SimcardListFragment : Fragment() {
             setMessage(if (isLockedFlag) "Unlock simcard?" else "Lock simcard?")
             setPositiveButton("Yes") { dialog, _ ->
                 if (CommonFunc.isNetworkConnected(context)) {
-                    simcardListViewModel.updateSimCardIsLocked(simcardId, if (isLockedFlag) "-1" else "1")
+                    if (isLockedFlag) {
+                        imageButton.setImageResource(R.drawable.card_simcard_unlock_icon)
+                        simcardListViewModel.updateSimCardIsLocked(simcardId, "-1")
+                    } else {
+                        imageButton.setImageResource(R.drawable.card_simcard_lock_icon)
+                        simcardListViewModel.updateSimCardIsLocked(simcardId, "1")
+                    }
                 } else {
                     Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
                 }
