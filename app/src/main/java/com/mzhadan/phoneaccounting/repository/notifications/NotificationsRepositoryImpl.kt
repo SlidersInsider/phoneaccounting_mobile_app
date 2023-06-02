@@ -2,6 +2,7 @@ package com.mzhadan.phoneaccounting.repository.notifications
 
 import com.mzhadan.phoneaccounting.remote.entities.Notification
 import com.mzhadan.phoneaccounting.remote.notifications.NotificationsApi
+import retrofit2.Response
 import javax.inject.Inject
 
 class NotificationsRepositoryImpl @Inject constructor(
@@ -12,11 +13,11 @@ class NotificationsRepositoryImpl @Inject constructor(
         return notificationsApi.getAllNotifications()
     }
 
-    override suspend fun getNotificationById(notificationId: Int): List<Notification> {
+    override suspend fun getNotificationById(notificationId: Int): Notification {
         return notificationsApi.getNotificationById(notificationId)
     }
 
-    override suspend fun addNewNotification(notification: Notification) {
+    override suspend fun addNewNotification(notification: Notification): Response<Notification> {
        return notificationsApi.addNewNotification(notification)
     }
 }

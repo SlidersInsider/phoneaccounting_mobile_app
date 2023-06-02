@@ -1,14 +1,17 @@
 package com.mzhadan.phoneaccounting.remote.simcards
 
+import com.mzhadan.phoneaccounting.remote.entities.Locked
+import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
 import com.mzhadan.phoneaccounting.remote.entities.SdCard
 import com.mzhadan.phoneaccounting.remote.entities.SimCard
+import retrofit2.Response
 import retrofit2.http.*
 
 interface SimCardsApi {
-    @GET("simcards/all")
+    @GET("simcards/")
     suspend fun getAllSimCards(): List<SimCard>
 
-    @GET("simcards/id/{simcardId}")
+    @GET("simcards/{simcardId}/")
     suspend fun getSimCardById(
         @Path("simcardId")
         simcardId: Int
@@ -20,23 +23,23 @@ interface SimCardsApi {
         number: String
     ): List<SimCard>
 
-    @POST("simcards/add/simcard")
+    @POST("simcards/")
     suspend fun addNewSimCard(
         @Body
         simcard: SimCard
-    )
+    ): Response<SimCard>
 
-    @DELETE("simcards/delete/simcard/{simcardId}")
+    @DELETE("simcards/{simcardId}/")
     suspend fun deleteSimCardById(
         @Path("simcardId")
         simcardId: Int
-    )
+    ): Response<SimCard>
 
-    @PUT("simcards/update/simcard/{simcardId}")
+    @PATCH("simcards/{simcardId}/")
     suspend fun updateSimCardIsLocked(
         @Path("simcardId")
         simcardId: Int,
         @Body
-        isLocked: String
-    )
+        locked: Locked
+    ): Response<Locked>
 }

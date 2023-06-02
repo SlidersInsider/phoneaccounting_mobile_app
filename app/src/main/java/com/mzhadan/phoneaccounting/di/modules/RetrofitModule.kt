@@ -33,7 +33,7 @@ class RetrofitModule {
     @Provides
     @Singleton
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient) = Retrofit.Builder()
-        .baseUrl("http://192.168.0.105:8080/api/v1/")
+        .baseUrl("https://phoneaccountingbackend-production.up.railway.app/api/v1/")
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
         .build()

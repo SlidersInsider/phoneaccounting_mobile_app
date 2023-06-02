@@ -21,16 +21,16 @@ class PhoneDetailsViewModel @Inject constructor(
     private val sdCardsRepository: SdCardsRepository
 ): ViewModel() {
 
-    var phoneInfoList = MutableLiveData<List<PhoneInfo>>()
-    var simcard1List = MutableLiveData<List<SimCard>>()
-    var simcard2List = MutableLiveData<List<SimCard>>()
-    var sdCardsList = MutableLiveData<List<SdCard>>()
+    var phoneInfoElem = MutableLiveData<PhoneInfo>()
+    var simcard1Elem = MutableLiveData<List<SimCard>>()
+    var simcard2Elem = MutableLiveData<List<SimCard>>()
+    var sdCardElem = MutableLiveData<List<SdCard>>()
 
     @Synchronized
     fun getPhoneInfoById(phoneId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val phoneInfoResponse = phoneInfoRepository.getPhoneById(phoneId)
-            phoneInfoList.postValue(phoneInfoResponse)
+            phoneInfoElem.postValue(phoneInfoResponse)
         }
     }
 
@@ -39,9 +39,9 @@ class PhoneDetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val simcardResponse = simCardsRepository.getSimCardByNumber(number)
             if (numberCounter == 1) {
-                simcard1List.postValue(simcardResponse)
+                simcard1Elem.postValue(simcardResponse)
             } else {
-                simcard2List.postValue(simcardResponse)
+                simcard2Elem.postValue(simcardResponse)
             }
         }
     }
@@ -50,7 +50,7 @@ class PhoneDetailsViewModel @Inject constructor(
     fun getSdcardBySerialNumber(serialNumber: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val sdcardResponse = sdCardsRepository.getSdCardBySerialNumber(serialNumber)
-            sdCardsList.postValue(sdcardResponse)
+            sdCardElem.postValue(sdcardResponse)
         }
     }
 }

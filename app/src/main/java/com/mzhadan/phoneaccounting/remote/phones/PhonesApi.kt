@@ -1,46 +1,50 @@
 package com.mzhadan.phoneaccounting.remote.phones
 
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.User
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface PhonesApi {
-    @GET("phones/all")
+    @GET("phones/")
     suspend fun getAllPhonesInfo(): List<PhoneInfo>
 
-    @GET("phones/id/{phoneId}")
+    @GET("phones/{phoneId}/")
     suspend fun getPhoneById(
         @Path("phoneId")
         phoneId: Int
-    ): List<PhoneInfo>
+    ): PhoneInfo
 
     @GET("phones/manufacturer/{mnfctr}")
     suspend fun getPhoneByManufacturer(
-        @Path("mnfctr")
+        @Path("mnfctr/")
         mnfctr: String
-    ): List<PhoneInfo>
+    ): PhoneInfo
 
-    @POST("phones/add/phone")
+    @POST("phones/")
     suspend fun addNewPhoneInfo(
         @Body
         phoneInfo: PhoneInfo
-    )
+    ): Response<PhoneInfo>
 
-    @DELETE("phones/delete/phone/{phoneId}")
+    @DELETE("phones/{phoneId}/")
     suspend fun deletePhoneInfoById(
         @Path("phoneId")
         phoneId: Int
-    )
+    ): Response<PhoneInfo>
 
-    @PUT("phones/update/user/{phoneId}")
+    @PATCH("phones/{phoneId}/")
     suspend fun updatePhoneInfoUser(
         @Path("phoneId")
         phoneId: Int,
         @Body
-        name: String
-    )
+        user: User
+    ): Response<User>
 }

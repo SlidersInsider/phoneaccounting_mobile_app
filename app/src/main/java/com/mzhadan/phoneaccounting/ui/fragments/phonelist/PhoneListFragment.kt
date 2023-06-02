@@ -17,6 +17,7 @@ import com.mzhadan.phoneaccounting.common.CommonFunc.Companion.isNetworkConnecte
 import com.mzhadan.phoneaccounting.databinding.PhoneListFragmentBinding
 import com.mzhadan.phoneaccounting.local.entities.LocalPhoneInfo
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.User
 import com.mzhadan.phoneaccounting.ui.adapters.PhoneListAdapter
 import com.mzhadan.phoneaccounting.ui.fragments.phonedetails.PhoneDetailsFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,7 +83,7 @@ class PhoneListFragment : Fragment() {
             setView(editText)
             setPositiveButton("Edit") { dialog, _ ->
                 if (isNetworkConnected(context)) {
-                    phoneListViewModel.updatePhoneInfoUser(phoneId, editText.text.toString())
+                    phoneListViewModel.updatePhoneInfoUser(phoneId, User(editText.text.toString()))
                 } else {
                     Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()
                 }

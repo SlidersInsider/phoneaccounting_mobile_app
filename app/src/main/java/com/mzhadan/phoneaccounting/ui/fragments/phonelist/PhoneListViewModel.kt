@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mzhadan.phoneaccounting.local.AppDatabase
 import com.mzhadan.phoneaccounting.local.entities.LocalPhoneInfo
 import com.mzhadan.phoneaccounting.remote.entities.PhoneInfo
+import com.mzhadan.phoneaccounting.remote.entities.User
 import com.mzhadan.phoneaccounting.repository.phones.PhonesInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -52,9 +53,9 @@ class PhoneListViewModel @Inject constructor(
     }
 
     @Synchronized
-    fun updatePhoneInfoUser(phoneId: Int, name: String) {
+    fun updatePhoneInfoUser(phoneId: Int, user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-            phoneInfoRepository.updatePhoneInfoUser(phoneId, name)
+            phoneInfoRepository.updatePhoneInfoUser(phoneId, user)
         }
     }
 

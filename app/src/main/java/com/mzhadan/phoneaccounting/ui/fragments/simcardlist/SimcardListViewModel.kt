@@ -3,6 +3,7 @@ package com.mzhadan.phoneaccounting.ui.fragments.simcardlist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mzhadan.phoneaccounting.remote.entities.Locked
 import com.mzhadan.phoneaccounting.remote.entities.Notification
 import com.mzhadan.phoneaccounting.remote.entities.SimCard
 import com.mzhadan.phoneaccounting.repository.simcards.SimCardsRepository
@@ -32,9 +33,9 @@ class SimcardListViewModel @Inject constructor(
     }
 
     @Synchronized
-    fun updateSimCardIsLocked(simcardId: Int, isLocked: String) {
+    fun updateSimCardIsLocked(simcardId: Int, locked: Locked) {
         viewModelScope.launch(Dispatchers.IO) {
-            simCardsRepository.updateSimCardIsLocked(simcardId, isLocked)
+            simCardsRepository.updateSimCardIsLocked(simcardId, locked)
         }
     }
 }

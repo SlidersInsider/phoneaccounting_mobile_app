@@ -16,11 +16,13 @@ import com.mzhadan.phoneaccounting.common.CommonFunc
 import com.mzhadan.phoneaccounting.databinding.PhoneDetailsFragmentBinding
 import com.mzhadan.phoneaccounting.databinding.SdcardListFragmentBinding
 import com.mzhadan.phoneaccounting.databinding.SimcardListFragmentBinding
+import com.mzhadan.phoneaccounting.remote.entities.Locked
 import com.mzhadan.phoneaccounting.ui.adapters.NotificationListAdapter
 import com.mzhadan.phoneaccounting.ui.adapters.PhoneListAdapter
 import com.mzhadan.phoneaccounting.ui.adapters.SimCardListAdapter
 import com.mzhadan.phoneaccounting.ui.fragments.phonedetails.PhoneDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.locks.Lock
 
 @AndroidEntryPoint
 class SimcardListFragment : Fragment() {
@@ -61,8 +63,8 @@ class SimcardListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         simCardListAdapter = SimCardListAdapter(object: SimCardListAdapter.SimcardViewHolder.Callback {
-            override fun onSimLock(isLocked: String, simcardId: Int, imageButton: ImageButton) {
-                createLockDialog(isLocked, simcardId, imageButton)
+            override fun onSimLock(locked: Boolean, simcardId: Int, imageButton: ImageButton) {
+                createLockDialog(locked, simcardId, imageButton)
             }
 
             override fun onDelete(simcardId: Int) {
@@ -71,20 +73,19 @@ class SimcardListFragment : Fragment() {
         })
     }
 
-    private fun createLockDialog(isLocked: String, simcardId: Int, imageButton: ImageButton) {
+    private fun createLockDialog(locked: Boolean, simcardId: Int, imageButton: ImageButton) {
         val alertDialog = AlertDialog.Builder(requireContext())
-        val isLockedFlag = if (isLocked.equals("-1")) false else true
         alertDialog.apply {
-            setTitle(if (isLockedFlag) "Unlock simcard" else "Lock simcard")
-            setMessage(if (isLockedFlag) "Unlock simcard?" else "Lock simcard?")
+            setTitle(if (locked) "Unlock simcard" else "Lock simcard")
+            setMessage(if (locked) "Unlock simcard?" else "Lock simcard?")
             setPositiveButton("Yes") { dialog, _ ->
                 if (CommonFunc.isNetworkConnected(context)) {
-                    if (isLockedFlag) {
+                    if (locked) {
                         imageButton.setImageResource(R.drawable.card_simcard_unlock_icon)
-                        simcardListViewModel.updateSimCardIsLocked(simcardId, "-1")
+                        simcardListViewModel.updateSimCardIsLocked(simcardId, Locked(false))
                     } else {
                         imageButton.setImageResource(R.drawable.card_simcard_lock_icon)
-                        simcardListViewModel.updateSimCardIsLocked(simcardId, "1")
+                        simcardListViewModel.updateSimCardIsLocked(simcardId, Locked(true))
                     }
                 } else {
                     Toast.makeText(context, "No internet connection!", Toast.LENGTH_SHORT).show()

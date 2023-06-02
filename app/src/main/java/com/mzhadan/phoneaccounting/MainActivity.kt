@@ -130,17 +130,17 @@ class MainActivity : AppCompatActivity() {
         var simCard2: SimCard
         if (simInfo.simSlotsCount == 2) {
             simCard1 = SimCard(0, simInfo.simCards[0].provider, simcard1,
-                "-1", if (simInfo.simCards[0].isInserted) "1" else "-1")
+                false, if (simInfo.simCards[0].isInserted) true else false)
             simCard2 = SimCard(0, simInfo.simCards[1].provider, simcard2,
-                "-1", if (simInfo.simCards[1].isInserted) "1" else "-1")
+                false, if (simInfo.simCards[1].isInserted) true else false)
         } else {
             simCard1 = SimCard(0, simInfo.simCards[0].provider, simcard1,
-                "-1", if (simInfo.simCards[0].isInserted) "1" else "-1")
-            simCard2 = SimCard(0, "", "", "", "")
+                false, if (simInfo.simCards[0].isInserted) true else false)
+            simCard2 = SimCard(0, "", "", false, false)
         }
 
         val sdCard = SdCard(0, sdInfo.name, sdInfo.serialNumber, sdInfo.size.toString(),
-            if (sdInfo.isInserted) "1" else "-1")
+            if (sdInfo.isInserted) true else false)
 
         pushNewData(phoneInfo, simCard1, simCard2, sdCard)
     }

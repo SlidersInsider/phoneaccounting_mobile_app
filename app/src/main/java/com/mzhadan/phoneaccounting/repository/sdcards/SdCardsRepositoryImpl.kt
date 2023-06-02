@@ -4,6 +4,7 @@ import com.mzhadan.phoneaccounting.remote.entities.SdCard
 import com.mzhadan.phoneaccounting.remote.notifications.NotificationsApi
 import com.mzhadan.phoneaccounting.remote.sdcards.SdCardsApi
 import com.mzhadan.phoneaccounting.repository.notifications.NotificationsRepository
+import retrofit2.Response
 import javax.inject.Inject
 
 class SdCardsRepositoryImpl @Inject constructor(
@@ -18,10 +19,10 @@ class SdCardsRepositoryImpl @Inject constructor(
     override suspend fun getSdCardBySerialNumber(serialNumber: String): List<SdCard> =
         sdCardsApi.getSdCardBySerialNumber(serialNumber)
 
-    override suspend fun addNewSdCard(sdcard: SdCard) =
+    override suspend fun addNewSdCard(sdcard: SdCard): Response<SdCard> =
         sdCardsApi.addNewSdCard(sdcard)
 
-    override suspend fun deleteSdCardById(sdcardId: Int) =
+    override suspend fun deleteSdCardById(sdcardId: Int): Response<SdCard> =
         sdCardsApi.deleteSdCardById(sdcardId)
 
 }

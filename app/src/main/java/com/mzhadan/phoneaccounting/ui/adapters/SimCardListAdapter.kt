@@ -42,23 +42,19 @@ class SimCardListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         interface Callback{
-            fun onSimLock(isLocked: String, simcardId: Int, imageButton: ImageButton)
+            fun onSimLock(locked: Boolean, simcardId: Int, imageButton: ImageButton)
             fun onDelete(simcardId: Int)
         }
 
         fun bind(simcard: SimCard) {
             binding.phone1.text = "${simcard.number} (${simcard.operatorName})"
-            var isLocked = simcard.locked
-            if (isLocked[0].equals('\"')) {
-                isLocked = isLocked.substring(1, isLocked.length - 1)
-            }
-            if (isLocked.equals("-1")) {
-                binding.lockSimcardBtn.setImageResource(R.drawable.card_simcard_unlock_icon)
-            } else {
+            if (simcard.locked) {
                 binding.lockSimcardBtn.setImageResource(R.drawable.card_simcard_lock_icon)
+            } else {
+                binding.lockSimcardBtn.setImageResource(R.drawable.card_simcard_unlock_icon)
             }
             binding.lockSimcardBtn.setOnClickListener {
-                callback.onSimLock(isLocked, simcard.simcardId, binding.lockSimcardBtn)
+                callback.onSimLock(simcard.locked, simcard.simcardId, binding.lockSimcardBtn)
             }
             binding.root.setOnLongClickListener {
                 callback.onDelete(simcard.simcardId)

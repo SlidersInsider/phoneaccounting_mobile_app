@@ -44,24 +44,24 @@ class PhoneDetailsFragment : Fragment() {
     }
 
     private fun phoneData() {
-        phoneDetailsViewModel.phoneInfoList.observe(viewLifecycleOwner) { phoneInfoList ->
-            if (phoneInfoList != null) {
+        phoneDetailsViewModel.phoneInfoElem.observe(viewLifecycleOwner) { phoneInfo ->
+            if (phoneInfo != null) {
                 binding.loadingProgressBar.visibility = View.GONE
-                binding.model.text = "Model: ${phoneInfoList[0].model}"
-                binding.manufacturer.text = "Manufacturer: ${phoneInfoList[0].manufacturer}"
-                binding.osVersion.text = "Os version: ${phoneInfoList[0].convertedOsVersion} (API ${phoneInfoList[0].osVersion})"
-                binding.firmware.text = "Firmware: ${phoneInfoList[0].firmware}"
-                binding.supportedArch.text = "Supported arch: ${phoneInfoList[0].supportedArch}"
-                binding.simSlotsCount.text = "Sim slots count: ${phoneInfoList[0].simSlotsCount}"
-                if (!phoneInfoList[0].simcard1.equals("-1")) {
-                    phoneDetailsViewModel.getSimcardByNumber(phoneInfoList[0].simcard1, 1)
+                binding.model.text = "Model: ${phoneInfo.model}"
+                binding.manufacturer.text = "Manufacturer: ${phoneInfo.manufacturer}"
+                binding.osVersion.text = "Os version: ${phoneInfo.convertedOsVersion} (API ${phoneInfo.osVersion})"
+                binding.firmware.text = "Firmware: ${phoneInfo.firmware}"
+                binding.supportedArch.text = "Supported arch: ${phoneInfo.supportedArch}"
+                binding.simSlotsCount.text = "Sim slots count: ${phoneInfo.simSlotsCount}"
+                if (!phoneInfo.simcard1.equals("-1")) {
+                    phoneDetailsViewModel.getSimcardByNumber(phoneInfo.simcard1, 1)
                 }
-                if (!phoneInfoList[0].simcard2.equals("-1")) {
-                    phoneDetailsViewModel.getSimcardByNumber(phoneInfoList[0].simcard2, 2)
+                if (!phoneInfo.simcard2.equals("-1")) {
+                    phoneDetailsViewModel.getSimcardByNumber(phoneInfo.simcard2, 2)
                 }
-                binding.sdSlotsCount.text = "Sd slots count: ${phoneInfoList[0].sdSlotsCount}"
-                if (!phoneInfoList[0].sdcardSerialNumber.equals("-1")) {
-                    phoneDetailsViewModel.getSdcardBySerialNumber(phoneInfoList[0].sdcardSerialNumber)
+                binding.sdSlotsCount.text = "Sd slots count: ${phoneInfo.sdSlotsCount}"
+                if (!phoneInfo.sdcardSerialNumber.equals("-1")) {
+                    phoneDetailsViewModel.getSdcardBySerialNumber(phoneInfo.sdcardSerialNumber)
                 } else {
                     binding.sdName.text = "Sd name: no sd"
                 }
@@ -72,9 +72,9 @@ class PhoneDetailsFragment : Fragment() {
     }
 
     private fun sim1Data() {
-        phoneDetailsViewModel.simcard1List.observe(viewLifecycleOwner) { simcardsList ->
-            if (simcardsList != null) {
-                binding.simcard1.text = "Simcard 1: ${simcardsList[0].number} (${simcardsList[0].operatorName})"
+        phoneDetailsViewModel.simcard1Elem.observe(viewLifecycleOwner) { simcard ->
+            if (simcard != null) {
+                binding.simcard1.text = "Simcard 1: ${simcard[0].number} (${simcard[0].operatorName})"
             } else {
                 binding.simcard1.text = "Simcard 1: no sim"
             }
@@ -82,9 +82,9 @@ class PhoneDetailsFragment : Fragment() {
     }
 
     private fun sim2Data() {
-        phoneDetailsViewModel.simcard2List.observe(viewLifecycleOwner) { simcardsList ->
-            if (simcardsList != null) {
-                binding.simcard2.text = "Simcard 2: ${simcardsList[0].number} (${simcardsList[0].operatorName})"
+        phoneDetailsViewModel.simcard2Elem.observe(viewLifecycleOwner) { simcard ->
+            if (simcard != null) {
+                binding.simcard2.text = "Simcard 2: ${simcard[0].number} (${simcard[0].operatorName})"
             } else {
                 binding.simcard2.text = "Simcard 2: no sim"
             }
@@ -92,11 +92,11 @@ class PhoneDetailsFragment : Fragment() {
     }
 
     private fun sdData() {
-        phoneDetailsViewModel.sdCardsList.observe(viewLifecycleOwner) { sdcardsList ->
-            if (sdcardsList != null) {
-                binding.sdName.text = "Sd card: ${sdcardsList[0].name}"
-                binding.sdSize.text = "Size: ${sdcardsList[0].size}"
-                binding.sdSerialNumber.text = "Serial number: ${sdcardsList[0].serialNumber}"
+        phoneDetailsViewModel.sdCardElem.observe(viewLifecycleOwner) { sdcard ->
+            if (sdcard != null) {
+                binding.sdName.text = "Sd card: ${sdcard[0].name}"
+                binding.sdSize.text = "Size: ${sdcard[0].size}"
+                binding.sdSerialNumber.text = "Serial number: ${sdcard[0].serialNumber}"
             } else {
                 binding.sdName.text = "Sd card: no sd"
                 binding.sdSize.text = ""
